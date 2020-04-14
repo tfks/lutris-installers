@@ -1,0 +1,25 @@
+name: Soldier of Fortune II - Double Helix
+game_slug: soldier-of-fortune-ii-double-helix
+version: Soldier of Fortune II - Double Helix 0.1
+slug: soldier-of-fortune-ii-double-helix-installer
+runner: wine
+
+script:
+  files:
+  - installation: N/A:Select the game's setup file
+  game:
+    exe: $GAMEDIR/prefix/drive_c/GOG Games/Soldier of Fortune 2/SoF2.exe
+    prefix: $GAMEDIR/prefix
+  installer:
+  - task:
+      description: Installing Soldier of Fortune II - Double Helix
+      executable: installation
+      name: wineexec
+      prefix: $GAMEDIR/prefix
+  system:
+    env:
+      MESA_EXTENSION_MAX_YEAR: 2003
+      __GL_ExtensionStringVersion: '17700'
+  wine:
+    Desktop: true
+    WineDesktop: 1024x768

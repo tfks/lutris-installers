@@ -1,0 +1,73 @@
+name: Dune 2000
+game_slug: dune-2000
+version: GruntMods 1.6.2.4
+slug: dune-2000-gruntmods-1624
+runner: wine
+
+script:
+    game:
+        arch: win32
+        prefix: $GAMEDIR
+        exe: drive_c/Program Files/Gruntmods Studios/Dune 2000/DUNE2000.EXE
+    files:
+    - mainGame: https://files.gruntmods.com/Files/Uploads/Dune/Dune%202000%20Gruntmods%20Edition%201.6.2.4.exe
+    - cutScenesEng: 
+               url: https://gruntmods.com/download/909/
+               filename: Dune_2000_Gruntmods_Edition_Cutscenes.exe
+    - cutScenesFra:
+               url: https://gruntmods.com/download/833/
+               filename: Dune_2000_Gruntmods_Edition_French_Cutscenes.exe
+    - cutScenesIta: 
+               url: https://gruntmods.com/download/1015/
+               filename: Dune_2000_Gruntmods_Edition_Italian_Cutscenes.exe
+    - cutScenesGer: 
+               url: https://gruntmods.com/download/1019/
+               filename: Dune_2000_Gruntmods_Edition_German_Cutscenes.exe
+    - cutScenesSpa:
+               url: https://gruntmods.com/download/1040/
+               filename: Dune_2000_Gruntmods_Edition_Spanish_Cutscenes.exe
+    installer:
+    - execute:
+        command: 'echo ''cache dir is:'' $CACHE'
+    - execute:
+        command: 'test -d "$CACHE/" && echo "Cache directory exists." || mkdir $CACHE'
+    - execute:
+        command: 'printf "%b" ''#!/usr/bin/env python\nimport gi\ngi.require_version("Gdk", "3.0")\ngi.require_version("Gtk", "3.0")\ngi.require_version("GnomeDesktop", "3.0")\nfrom gi.repository import Gtk\nfrom gi.repository.GdkPixbuf import Pixbuf\nfrom lutris.util.downloader import Downloader\nwnd=None\nimg_header=None\ndestfile=""\ndownloader=None\ndef handlerOk(self):\n wnd.destroy()\ndef loadHeaderImage():\n global destfile\n global downloader\n url="https://lutris.net/media/cache/52/dd/52ddbf4b6a59ab9af346ff50f7576ec6.jpg"\n destfile="/tmp/dune-2000.jpg"\n downloader=Downloader(url,destfile,True,None,loadHeaderImageCallBack)\n downloader.start()\ndef loadHeaderImageCallBack():\n img_header.set_from_pixbuf(Pixbuf.new_from_file(destfile))\ndef createDialog():\n global wnd\n global img_header\n wnd=Gtk.Window()\n wnd.set_default_size(400,400)\n wnd.set_position(Gtk.WindowPosition.CENTER)\n wnd.connect("destroy",Gtk.main_quit)\n wnd.set_title("Dune 2000")\n wnd.set_resizable(False)\n wnd.set_icon_from_file("/usr/share/lutris/media/logo.png")\n vbox=Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=12,visible=True)\n vbox.set_margin_top(18)\n vbox.set_margin_bottom(18)\n vbox.set_margin_right(18)\n vbox.set_margin_left(18)\n wnd.add(vbox)\n img_header=Gtk.Image()\n loadHeaderImage()\n vbox.pack_start(img_header,False,False,0)\n label=Gtk.Label()\n label.set_alignment(0,0)\n label.set_text("This installer will install Dune 2000 and the cut scenes on your machine. ")\n vbox.pack_start(label,False,False,0)\n label2=Gtk.Label()\n label2.set_alignment(0,0)\n label2.set_text("The game will ask for your preferred language, will set the game to this language, and download the cut scenes for this language.")\n vbox.pack_start(label2,False,False,0)\n action_buttons=Gtk.Box(spacing=6)\n vbox.pack_start(action_buttons,False,False,0)\n action_buttons_alignment=Gtk.Alignment.new(0,0,1,1)\n action_buttons_alignment.add(action_buttons)\n vbox.pack_start(action_buttons_alignment,False,True,50)\n ok_button=Gtk.Button("Install Dune 2000")\n ok_button.set_property("width-request",75)\n ok_button.set_hexpand(True)\n ok_button.connect("clicked",handlerOk)\n action_buttons.add(ok_button)\n wnd.show_all()\ncreateDialog()\nGtk.main()\n\n'' > $CACHE/dune-2000-install.py'
+    - execute:
+        command: '/usr/bin/python3 /home/tfk/test.py'
+    - execute:
+        command: '/usr/bin/python3 $CACHE/dune-2000-install.py'
+    - input_menu:
+        description: "Choose the game's language:"
+        id: LANG
+        options:
+        - Eng: English
+        - Fra: French
+        - Ita: Italian
+        - Ger: German
+        - Spa: Spanish
+        preselect: Eng
+    - task:
+        arch: win32
+        executable: $mainGame
+        name: wineexec
+        prefix: $GAMEDIR
+    - task:
+        arch: win32
+        executable: $cutScenes$INPUT_LANG
+        name: wineexec
+        prefix: $GAMEDIR
+    - move:
+        src: $GAMEDIR/data/Movies
+        dst: $GAMEDIR/data/Movies_
+    - execute:
+        command: 'ln -s $GAMEDIR/movies $GAMEDIR/data/Movies'
+    - execute:
+        command: 'echo "[Hotkeys]\nSelectAllUnits=69\nScatter=88\nCenterNextUnit=78\nRepair=84\nSell=89\nGuard=71\nCenterBase=72\nStop=83\nBookmark1=120\nBookmark2=121\nBookmark3=122\nBookmark4=123\nSidebarUp=38\nSidebarDown=40\nAlliance=65\nRetreat=82\nSelectPrimaryBuilding=80\nOptionsMenu=27\nTeam1=49\nTeam2=50\nTeam3=51\nTeam4=52\nTeam5=53\nTeam6=54\nTeam7=55\nTeam8=56\nTeam9=57\nTeam10=48\nCTRL=17\nALT=18\nSHIFT=16\nPrivateChat1=112\nPrivateChat2=113\nPrivateChat3=114\nPrivateChat4=115\nPrivateChat5=116\nPublicChat=117\nWOLPageReply=119\nWOLProposeDraw=68\nCenterSelectedUnits=36\nScrollLeft=97\nScrollDown=98\nScrollRight=99\nScrollUp=101\nToggleLiveStats=9\nPlayRandomSong=187\n\n[Options]\nGameSpeed=75\nScrollRate=20\nSFXVolume=100\nMusicVolume=100\nMoviesEnabled=Yes\nSoundsEnabled=Yes\nVideoBackBuffer=Yes\nForceNoCD=Yes\nSlowSideBarScrolling=No\nGameBitsPerPixel=16\nDisableMaxWindowedMode=Yes\nUseImprovedFPSLimiter=Yes\nCutsceneChangeResolution=No\nSingleProcessorAffinity=Yes\nGameWidth=1280\nGameHeight=720\nLanguage=Eng\n\n[DxWnd]\nWidth=0\nHeight=0\nPosX=0\nPosY=0\nEnableDxWnd=No\nRunInWindow=No\nClipCursor=Yes\nModalStyle=No\nGDIMode=Yes\n" $GAMEDIR/dune2000.ini'
+    - execute:
+        command: "awk 'sub(\"$\", \"\\r\")' $GAMEDIR/dune2000.ini > $GAMEDIR/dune2000.ini"
+    - write_config:
+        file: $GAMEDIR/dune2000.ini
+        data:
+        Options:
+            Language: $INPUT_LANG

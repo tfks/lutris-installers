@@ -1,0 +1,29 @@
+name: Star Wars Empire at War Gold
+game_slug: star-wars-empire-at-war-gold
+version: Star Wars Empire at War Gold - GOG version
+slug: star-wars-empire-at-war-gold-gog
+runner: wine
+
+script:
+  files:
+  - file1: N/A:Select the game's setup file
+  game:
+    arch: win32
+    exe: drive_c/GOG Games/Star Wars - Empire At War Gold/Launch Star Wars - Empire
+      At War.lnk
+    prefix: $GAMEDIR
+  installer:
+  - task:
+      arch: win32
+      name: create_prefix
+      prefix: $GAMEDIR
+  - task:
+      description: Installing Star Wars Empire at War
+      executable: ${file1}
+      name: wineexec
+      prefix: $GAMEDIR
+  - task:
+      app: corefonts d3dx9 d3dcompiler_43 dinput8
+      arch: win32
+      name: winetricks
+      prefix: $GAMEDIR
