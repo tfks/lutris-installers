@@ -1,0 +1,35 @@
+name: "Star Trek - Fleet Command III"
+game_slug: "star-trek-fleet-command-3"
+version: "Star Trek - Fleet Command III - CD Version"
+slug: "star-trek-fleet-command-3-installer"
+runner: "wine"
+
+script:
+    game:
+        arch: win32
+        prefix: $GAMEDIR
+    files:
+    - latest_patch: "N/A: Select the latest patch setup.exe"
+    exe: "drive_c/Program Files/Activision/Sfc3/SFC3.exe"
+    installer:
+    - insert-disc:
+        requires: Setup.exe
+    - task:
+        arch: win32
+        description: Creating Wine prefix
+        name: create_prefix
+        prefix: $GAMEDIR
+    - task:
+        executable: $DISC/Setup.exe
+        name: wineexec
+        prefix: $GAMEDIR
+    - task:
+        name: wineexec
+        prefix: $GAMEDIR
+        executable: latest_patch
+    - task:
+        app: corefonts d3dx9 d3dcompiler_43 dinput8
+        arch: win32
+        name: winetricks
+        prefix: $GAMEDIR
+

@@ -1,0 +1,24 @@
+name: "Star Trek - Fleet Command III"
+game_slug: star-trek-fleet-command-3
+version: "Star Trek - Fleet Command III - CD Version"
+slug: star-trek-fleet-command-3-installer
+runner: wine
+
+script:
+    files:
+    - lp: https://www.moddb.com/downloads/mirror/121169/125/
+9b852ca56d4d425f9c9dfe8b3942ccd2/
+    game:
+        prefix: $GAMEDIR
+        exe: "drive_c/Program Files (x86)/Activision/Sfc3/SFC.exe"
+    installer:
+    - insert-disc:
+        requires: Setup.exe
+    - task:
+        executable: $DISC/Setup.exe
+        name: wineexec
+        prefix: $GAMEDIR
+    - task:
+        name: wineexec
+        prefix: $GAMEDIR
+        executable: lp

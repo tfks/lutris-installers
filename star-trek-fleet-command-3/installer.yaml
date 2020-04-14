@@ -1,0 +1,74 @@
+name: "Star Trek - Fleet Command III"
+game_slug: "star-trek-fleet-command-3"
+version: "Star Trek - Fleet Command III - CD Version"
+slug: "star-trek-fleet-command-3-installer"
+runner: "wine"
+
+script:
+    game:
+        arch: win32
+        prefix: $GAMEDIR
+        exe: "drive_c/Program Files/Activision/Sfc3/SFC3.exe"
+    files:
+    - lp: "N/A: Select the latest patch archive (zip)"
+    installer:
+    - input_menu:
+        description: "Choose your resolution:"
+        id: RES
+        options:
+        - "800600": "800x600 (4:3)"
+        - "1024768": "1024x768 (4:3)"
+        - "1152864": "1152x864 (4:3)"
+        - "1280960": "1280x960 (4:3)"
+        - "14001050": "1400x1050 (4:3)"
+        - "16001200": "1600x1200 (4:3)"
+        - "20481536": "2048x1536 (4:3)"
+        - "852480": "852x480 (16:9)"
+        - "1280720": "1280x720 (16:9)"
+        - "1365768": "1365x768 (16:9)"
+        - "1600900": "1600x900 (16:9)"
+        - "19201080": "1920x1080 (16:9)"
+        - "25601440": "2560x1440 (16:9)"
+        - "640400": "640x400 (16:10)"
+        - "1280800": "1280x800 (16:10)"
+        - "1440900": "1440x900 (16:10)"
+        - "16801050": "1680x1050 (16:10)"
+        - "19201200": "1920x1200 (16:10)"
+        - "25601600": "2560x1600 (16:10)"
+        - "other": "Other"
+        preselect: $RESOLUTION
+    - insert-disc:
+        requires: Setup.exe
+    - task:
+        arch: win32
+        description: Creating Wine prefix
+        name: create_prefix
+        prefix: $GAMEDIR
+    - task:
+        executable: $DISC/Setup.exe
+        name: wineexec
+        prefix: $GAMEDIR
+    - extract:
+        file: lp
+        dst: $GAMEDIR/datadir/
+    - task:
+        name: wineexec
+        arch: win32
+        prefix: $GAMEDIR
+        executable: "$GAMEDIR/datadir/SFC3 Upgrade Mod 3.2 Setup.exe"
+    - merge:
+        src: "$GAMEDIR/datadir/JanB Extras/$INPUT_RES/SFC3.exe"
+        dst: "$GAMEDIR/drive_c/Program Files/Activision/Sfc3/SFC3.exe"
+    - merge:
+        src: "$GAMEDIR/datadir/JanB Extras/$INPUT_RES/sfc.ini"
+        dst: "$GAMEDIR/drive_c/Program Files/Activision/Sfc3/sfc.ini"
+    - execute:
+        command: '''if [ "$INPUT_RES" -eq "852480" -o "$INPUT_RES" -eq "1280720" -o "$INPUT_RES" -eq "1280720" -o "$INPUT_RES" -eq "1365768" -o "$INPUT_RES" -eq "1600900" -o "$INPUT_RES" -eq "19201080" -o "$INPUT_RES" -eq "25601440" ]\; then cp -f "$GAMEDIR/datadir/JanB\ Extras/HD169/Assets/Sprites/sprites.q3 $GAMEDIR/drive_c/Program\ Files/Activision/Sfc3/Assets/Sprites/" \; fi'''
+    - execute:
+        command: '''if [ "$INPUT_RES" -eq "640400" -o "$INPUT_RES" -eq "1280800" -o "$INPUT_RES" -eq "1440900" -o "$INPUT_RES" -eq "16801050" -o "$INPUT_RES" -eq "19201200" -o "$INPUT_RES" -eq "25601600" -o "$INPUT_RES" -eq "" ]\; then cp -f "$GAMEDIR/datadir/JanB\ Extras/HD1610/Assets/Sprites/sprites.q3 $GAMEDIR/drive_c/Program\ Files/Activision/Sfc3/Assets/Sprites/" \; fi'''
+    - task:
+        app: corefonts d3dx9 d3dcompiler_43 dinput8
+        arch: win32
+        name: winetricks
+        prefix: $GAMEDIR
+
