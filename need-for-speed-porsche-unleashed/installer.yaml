@@ -6,11 +6,10 @@ runner: wine
 
 script:
     files:
-    - patch: 'N/A: Select the Patch Setup File (Need-for-Speed-Porsche-Unleashed_Patch_Win_EN_Patch-35.exe)'
-    - widescreen: https://bitbucket.org/fk/porsche-graphics-hacks/downloads/nfspu-widescreen-1.0.1.zip
+    - patch: 'https://github.com/tfks/lutris-installers/raw/master/need-for-speed-porsche-unleashed/supporting-files/patches/Need-for-Speed-Porsche-Unleashed_Patch_Win_EN_Patch-35.exe'
+    - widescreen: 'https://github.com/tfks/lutris-installers/raw/master/need-for-speed-porsche-unleashed/supporting-files/patches/nfs5_pu_patch_1.06.7z'
     game:
-    exe: $GAMEDIR/drive_c/Program Files (x86)/Electronic Arts/Need For Speed - Porsche
-        Unleashed/Porsche.exe
+    exe: $GAMEDIR/drive_c/Program Files (x86)/Electronic Arts/Need For Speed - Porsche Unleashed/nfs5.exe
     prefix: $GAMEDIR
     installer:
     - insert-disc:
@@ -27,116 +26,13 @@ script:
         name: wineexec
         prefix: $GAMEDIR
     - extract:
-        dst: $CACHE/NFSPU/Drivers/
+        dst: $CACHE/NFSPU/
         file: widescreen
-    - execute:
-        command: iconv -f utf-16le -t utf-8 "$CACHE/NFSPU/Drivers/Enable Direct3D 7 Renderer.reg"
-        -o "$CACHE/NFSPU/Drivers/Enable Direct3D 7 Renderer.reg"
-    - execute:
-        command: iconv -f utf-16le -t utf-8 "$CACHE/NFSPU/Drivers/Enable Glide Renderer.reg"
-        -o "$CACHE/NFSPU/Drivers/Enable Glide Renderer.reg"
-    - execute:
-        command: iconv -f utf-16le -t utf-8 "$CACHE/NFSPU/Drivers/Enable Widescreen Renderer.reg"
-        -o "$CACHE/NFSPU/Drivers/Enable Widescreen Renderer.reg"
     - merge:
-        dst: $GAMEDIR/drive_c/Program Files (x86)/Electronic Arts/Need For Speed - Porsche
-        Unleashed/Drivers/
-        src: $CACHE/NFSPU/Drivers/
-    - task:
-        name: set_regedit
-        prefix: $GAMEDIR
-        path: 'HKEY_LOCAL_MACHINE\Software\Wow6432Node\Electronic Arts\Need For Speed - Porsche'
-        key: 'Thrash Driver'
-        value: 'PorscheWidescreen'
-        type: REG_SZ
-        arch: win64
-    - task:
-        name: set_regedit
-        prefix: $GAMEDIR
-        path: 'HKEY_LOCAL_MACHINE\Software\Wow6432Node\Electronic Arts\Need For Speed - Porsche'
-        key: 'Group'
-        value: 'D3D'
-        type: REG_SZ
-        arch: win64
-    - task:
-        name: set_regedit
-        prefix: $GAMEDIR
-        path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Electronic Arts\Need For Speed - Porsche 2000'
-        key: 'Thrash Driver'
-        value: 'PorscheWidescreen'
-        type: REG_SZ
-        arch: win64
-    - task:
-        name: set_regedit
-        prefix: $GAMEDIR
-        path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Electronic Arts\Need For Speed - Porsche 2000'
-        key: 'Group'
-        value: 'D3D'
-        type: REG_SZ
-        arch: win64
-    - task:
-        name: set_regedit
-        prefix: $GAMEDIR
-        path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Electronic Arts\Need For Speed - Porsche Unleashed'
-        key: 'Thrash Driver'
-        value: 'PorscheWidescreen'
-        type: REG_SZ
-        arch: win64
-    - task:
-        name: set_regedit
-        prefix: $GAMEDIR
-        path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Electronic Arts\Need For Speed - Porsche Unleashed'
-        key: 'Group'
-        value: 'D3D'
-        type: REG_SZ
-        arch: win64
-    - task:
-        name: set_regedit
-        prefix: $GAMEDIR
-        path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Electronic Arts\Need For Speed - Porsche'
-        key: 'Thrash Driver'
-        value: 'PorscheWidescreen'
-        type: REG_SZ
-        arch: win64
-    - task:
-        name: set_regedit
-        prefix: $GAMEDIR
-        path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Electronic Arts\Need For Speed - Porsche'
-        key: 'Group'
-        value: 'D3D'
-        type: REG_SZ
-        arch: win64
-    - task:
-        name: set_regedit
-        prefix: $GAMEDIR
-        path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Electronic Arts\Need For Speed - Porsche 2000'
-        key: 'Thrash Driver'
-        value: 'PorscheWidescreen'
-        type: REG_SZ
-        arch: win64
-    - task:
-        name: set_regedit
-        prefix: $GAMEDIR
-        path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Electronic Arts\Need For Speed - Porsche 2000'
-        key: 'Group'
-        value: 'D3D'
-        type: REG_SZ
-        arch: win64
-    - task:
-        name: set_regedit
-        prefix: $GAMEDIR
-        path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Electronic Arts\Need For Speed - Porsche Unleashed'
-        key: 'Thrash Driver'
-        value: 'PorscheWidescreen'
-        type: REG_SZ
-        arch: win64
-    - task:
-        name: set_regedit
-        prefix: $GAMEDIR
-        path: 'HKEY_LOCAL_MACHINE\SOFTWARE\Electronic Arts\Need For Speed - Porsche Unleashed'
-        key: 'Group'
-        value: 'D3D'
-        type: REG_SZ
-        arch: win64
-
-
+        src: widescreen
+        dst: $GAMEDIR
+    - write_config:
+        file: $GAMEDIR/nfs5.ini
+        section: NFS5
+        key: TrashDriver
+        value: opengl3
