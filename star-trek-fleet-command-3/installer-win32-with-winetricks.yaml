@@ -1,7 +1,7 @@
 name: "Star Trek - Fleet Command III"
-game_slug: "star-trek-fleet-command-3"
+game_slug: "star-trek-starfleet-command-3"
 version: "Star Trek - Fleet Command III - CD Version"
-slug: "star-trek-fleet-command-3-installer"
+slug: "star-trek-starfleet-command-3-installer"
 runner: "wine"
 
 script:
