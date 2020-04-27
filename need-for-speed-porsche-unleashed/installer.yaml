@@ -6,10 +6,12 @@ runner: wine
 
 script:
     files:
-    - patch: 'https://github.com/tfks/lutris-installers/raw/master/need-for-speed-porsche-unleashed/supporting-files/patches/Need-for-Speed-Porsche-Unleashed_Patch_Win_EN_Patch-35.exe'
-    - widescreen: 'https://github.com/tfks/lutris-installers/raw/master/need-for-speed-porsche-unleashed/supporting-files/patches/nfs5_pu_patch_1.06.7z'
+    - patch: https://github.com/tfks/lutris-installers/raw/master/need-for-speed-porsche-unleashed/supporting-files/patches/Need-for-Speed-Porsche-Unleashed_Patch_Win_EN_Patch-35.exe
+    - widescreen: https://github.com/tfks/lutris-installers/raw/master/need-for-speed-porsche-unleashed/supporting-files/patches/nfs5_pu_patch_1.06.tar.gz
+    - extracars: https://github.com/tfks/lutris-installers/raw/master/need-for-speed-porsche-unleashed/supporting-files/add-ons/NFS_5_Cars.tar.gz
     game:
-    exe: $GAMEDIR/drive_c/Program Files (x86)/Electronic Arts/Need For Speed - Porsche Unleashed/nfs5.exe
+    exe: $GAMEDIR/drive_c/Program Files (x86)/Electronic Arts/Need For Speed - Porsche
+        Unleashed/nfs5.exe
     prefix: $GAMEDIR
     installer:
     - insert-disc:
@@ -26,13 +28,13 @@ script:
         name: wineexec
         prefix: $GAMEDIR
     - extract:
-        dst: $CACHE/NFSPU/
+        dst: $GAMEDIR/drive_c/Program Files (x86)/Electronic Arts/Need For Speed - Porsche Unleashed/
         file: widescreen
-    - merge:
-        src: widescreen
-        dst: $GAMEDIR
     - write_config:
-        file: $GAMEDIR/nfs5.ini
+        file: $GAMEDIR/drive_c/Program Files (x86)/Electronic Arts/Need For Speed - Porsche Unleashed/nfs5.ini
+        key: ThrashDriver
         section: NFS5
-        key: TrashDriver
         value: opengl3
+    - extract:
+        dst: $GAMEDIR/drive_c/Program Files (x86)/Electronic Arts/Need For Speed - Porsche Unleashed/
+        file: extracars
