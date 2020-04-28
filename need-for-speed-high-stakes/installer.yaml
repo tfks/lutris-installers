@@ -1,0 +1,37 @@
+name: Need for Speed: High Stakes
+game_slug: need-for-speed-high-stakes
+version: CD
+slug: need-for-speed-high-stakes-cd
+runner: wine
+
+script:
+    files:
+    - patch: 'https://github.com/tfks/lutris-installers/raw/master/need-for-speed-high-stakes/supporting-files/patches/Need-for-Speed-High-Stakes_Patch_Win_EN.exe'
+    - widescreen: https://github.com/tfks/lutris-installers/raw/master/need-for-speed-high-stakes/supporting-files/patches/nfs4_modern_patch.tar.gz
+    game:
+        exe: $GAMEDIR/drive_c/Program Files (x86)/Electronic Arts/$INPUT_GAMEVER/nfshs.exe
+        prefix: $GAMEDIR
+    installer:
+    - input_menu:
+        description: 'Please select your version:'
+        id: GAMEVER
+        options:
+        - Need For Speed High Stakes: 'Need for Speed: High Stakes'
+        - Need For Speed Road Challenge: 'Need for Speed: Road Challenge'
+        preselect: Need For Speed High Stakes
+    - insert-disc:
+        requires: AUTORUN.EXE
+    - task:
+        name: create_prefix
+        prefix: $GAMEDIR
+    - task:
+        executable: $DISC/AUTORUN.EXE
+        name: wineexec
+        prefix: $GAMEDIR
+    - task:
+        executable: patch
+        name: wineexec
+        prefix: $GAMEDIR
+    - extract:
+        dst: $GAMEDIR/drive_c/Program Files (x86)/Electronic Arts/$INPUT_GAMEVER
+        file: widescreen

@@ -10,9 +10,8 @@ script:
     - widescreen: https://github.com/tfks/lutris-installers/raw/master/need-for-speed-porsche-unleashed/supporting-files/patches/nfs5_pu_patch_1.06.tar.gz
     - extracars: https://github.com/tfks/lutris-installers/raw/master/need-for-speed-porsche-unleashed/supporting-files/add-ons/NFS_5_Cars.tar.gz
     game:
-    exe: $GAMEDIR/drive_c/Program Files (x86)/Electronic Arts/Need For Speed - Porsche
-        Unleashed/nfs5.exe
-    prefix: $GAMEDIR
+        exe: $GAMEDIR/drive_c/Program Files (x86)/Electronic Arts/Need For Speed - Porsche Unleashed/nfs5.exe
+        prefix: $GAMEDIR
     installer:
     - insert-disc:
         requires: AutoRun.exe
@@ -38,3 +37,6 @@ script:
     - extract:
         dst: $GAMEDIR/drive_c/Program Files (x86)/Electronic Arts/Need For Speed - Porsche Unleashed/
         file: extracars
+    - merge:
+        dst: $GAMEDIR/drive_c/Program Files (x86)/Electronic Arts/Need For Speed - Porsche Unleashed/FEData/Movies/
+        src: $DISC/FEData/Movies/
