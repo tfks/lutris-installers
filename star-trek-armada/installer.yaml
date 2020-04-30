@@ -1,0 +1,35 @@
+name: "Star Trek - Armada"
+game_slug: "star-trek-armada"
+version: "Star Trek - Armada - CD"
+slug: "star-trek-armada-cd"
+runner: "wine"
+
+script:
+    files:
+    - installerpatch1:
+        filename: Star-Trek-Armada_Patch_Win_EN_Patch-12.exe
+        referer: https://github.com
+        url: https://github.com/tfks/lutris-installers/raw/master/star-trek-armada/supporting-files/patches/Star-Trek-Armada_Patch_Win_EN_Patch-12.exe
+    - installerpatch2:
+        filename: Star-Trek-Armada_Patch_Win_EN_Patch-13.exe
+        referer: https://github.com
+        url: https://github.com/tfks/lutris-installers/raw/master/star-trek-armada/supporting-files/patches/Star-Trek-Armada_Patch_Win_EN_Patch-13.exe
+    game:
+    exe: drive_c/Program Files/Activision/Star Trek - Armada/Armada.exe
+    prefix: $GAMEDIR
+    working_dir: $GAMEDIR
+    installer:
+    - insert-disc:
+        requires: Setup.exe
+    - task:
+        executable: $DISC/Setup/Setup.exe
+        name: wineexec
+        prefix: $GAMEDIR
+    - task:
+        executable: installerpatch1
+        name: wineexec
+        prefix: $GAMEDIR
+    - task:
+        executable: installerpatch2
+        name: wineexec
+        prefix: $GAMEDIR

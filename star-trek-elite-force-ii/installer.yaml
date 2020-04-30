@@ -1,0 +1,38 @@
+name: "Star Trek - Elite Force II"
+game_slug: "star-trek-elite-force-ii"
+version: "Star Trek - Elite Force II - CD Version"
+slug: "star-trek-elite-force-ii-installer"
+runner: "wine"
+
+script:
+    game:
+        exe: drive_c/Program Files (x86)/Activision/EF2/EF2.exe
+        prefix: $GAMEDIR
+    installer:
+    - task:
+        name: create_prefix
+        prefix: $GAMEDIR
+    - insert-disc:
+        description: Insert disc
+        requires: Setup.exe
+    - merge:
+        dst: $GAMEDIR/drive_c/CDROM
+        src: $DISC
+    - execute:
+        command: 'chmod -R 664 $GAMEDIR/drive_c/CDROM'
+    - insert-disc:
+        description: Insert disc
+        requires: Launch.exe
+    - merge:
+        dst: $GAMEDIR/drive_c/CDROM
+        src: $DISC
+    - execute:
+        command: 'chmod -R 664 $GAMEDIR/drive_c/CDROM'
+    - task:
+        executable: $GAMEDIR/drive_c/CDROM/Setup.exe
+        name: wineexec
+        prefix: $GAMEDIR
+    - move:
+        description: Moving the CDROM files
+        dst: $CACHE
+        src: $GAMEDIR/drive_c/CDROM
